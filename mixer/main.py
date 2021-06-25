@@ -20,17 +20,17 @@ class MusicMixer:
             return False
 
         for track in track_names:
-            if self.database.get(song_name, None) is None:
+            if self.database.get(track, None) is None:
                 return False
 
         return True
 
     def mix(self, song: str, tracks: List[str]):
         if not self.is_valid_song(song):
-            return False
+            return
 
         if not self.are_valid_tracks(song, tracks):
-            return False
+            return
 
         track_files = list()
 
@@ -40,8 +40,7 @@ class MusicMixer:
         # TODO: check length of the tracks list
         result = track_files[0]
         for track in track_files[1:]:
-            result = result.overlay(track)
-
+            result = result.overlay(track)  # TODO: check for clipping and reduce gain if needed?
         return result
 
 
