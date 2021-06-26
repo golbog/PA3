@@ -27,10 +27,11 @@ async def root():
 @app.post("/song/song_mix")
 async def first_post(song_mix: SongMix, request: Request):
     # request.client.host to get IP: for slowapi
+    # TODO: still need to figure out how to get mp3 file from pydub without saving it into a file first
     mixed_song = music_mixer.mix(song_mix.song, song_mix.parts)
     if mixed_song is None:
         return {"error": "bad input"}
-    return StreamingResponse(io.BytesIO(mixed_song), media_type="media/mp3")
+    return StreamingResponse(io.BytesIO(mixed_song), media_type="audio/mp3")
 
 if __name__ == '__main__':
     uvicorn.run(app, host="127.0.0.1", port=7880)

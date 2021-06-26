@@ -4,7 +4,7 @@ import json
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
-        base_path = "./songs/"
+        base_path = "../songs/"
     else:
         base_path = sys.argv[0]
 

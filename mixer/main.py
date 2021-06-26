@@ -3,8 +3,8 @@ import os
 import json
 from typing import List
 
-
 from pydub import AudioSegment
+# maybe use SoX
 
 
 class MusicMixer:
@@ -16,13 +16,12 @@ class MusicMixer:
         return self.database.get(song_name, None) is not None
 
     def are_valid_tracks(self, song_name, track_names):
-        if self.database.get(song_name, None) is None:
+        if len(track_names) == 0:
             return False
 
         for track in track_names:
-            if self.database.get(track, None) is None:
+            if track not in self.database[song_name]:
                 return False
-
         return True
 
     def mix(self, song: str, tracks: List[str]):
@@ -33,15 +32,13 @@ class MusicMixer:
             return
 
         track_files = list()
-
-        for track in tracks[1:]:
+        for track in tracks:
             track_files.append(AudioSegment.from_file(os.path.join(self.songs_folder, song, track)))
 
-        # TODO: check length of the tracks list
         result = track_files[0]
         for track in track_files[1:]:
             result = result.overlay(track)  # TODO: check for clipping and reduce gain if needed?
-        return result
+        return result.raw_data
 
 
 if __name__ == '__main__':
