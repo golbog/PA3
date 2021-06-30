@@ -1,6 +1,7 @@
 import logging
 import os
 import json
+import random
 from typing import List
 
 from pydub import AudioSegment
@@ -38,7 +39,13 @@ class MusicMixer:
         result = track_files[0]
         for track in track_files[1:]:
             result = result.overlay(track)  # TODO: check for clipping and reduce gain if needed?
-        return result.raw_data
+        filename = str(random.randrange(2**30)) + ".mp3"
+        result.export(filename)
+        return filename  # TODO: use .export() and write it to shm
+
+    @staticmethod
+    def raw_from_file(filename):
+        return AudioSegment.from_file(filename).raw_data
 
 
 if __name__ == '__main__':

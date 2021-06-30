@@ -21,4 +21,4 @@ if __name__ == '__main__':
                     songs[dir].append(file)
                     print(dir, file)
 
-    json.dump(songs, open("songs.json", "w"))
+    json.dump(songs, open("../songs.json", "w"))
