@@ -1,11 +1,9 @@
-import logging
+import io
 import os
 import json
-import random
 from typing import List
 
-from pydub import AudioSegment
-# maybe use SoX
+from pydub import AudioSegment  # maybe use SoX
 
 
 class MusicMixer:
@@ -39,9 +37,9 @@ class MusicMixer:
         result = track_files[0]
         for track in track_files[1:]:
             result = result.overlay(track)  # TODO: check for clipping and reduce gain if needed?
-        filename = str(random.randrange(2**30)) + ".mp3"
-        result.export(filename)
-        return filename  # TODO: use .export() and write it to shm
+        filestream = io.BytesIO()
+        result.export(filestream)
+        return filestream
 
     @staticmethod
     def raw_from_file(filename):
